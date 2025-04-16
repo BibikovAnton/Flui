@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "354289204822",
+    "project_id": "daily-604f4",
+    "storage_bucket": "daily-604f4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354289204822:android:2ce6cf8a1ad36eced405f7",
+        "android_client_info": {
+          "package_name": "com.example.chatty"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ZPOe_EIWOTGXLqoh1jFWkJ1dVo4Lgrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354289204822:android:78110c74e16c8dd9d405f7",
+        "android_client_info": {
+          "package_name": "com.example.theme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0ZPOe_EIWOTGXLqoh1jFWkJ1dVo4Lgrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
