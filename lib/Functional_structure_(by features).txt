@@ -31,18 +31,6 @@ lib/
 │
 └── main.dart              # Точка входа
 
-//Failure добавить и Exctantion и пакет dartz
 
-⚡️Используйте barrel-файлы (feature.dart) для упрощения импортов.
-
-// В папке feature_a/feature_a.dart
-export 'models/model_a.dart';
-export 'widgets/widget_a.dart';
-export 'screens/screen_a.dart';
-
-//сервисы не выносить
-
-
-переписать отдельно сервисы и репозиторие,пока едино!!!
 
 

@@ -24,7 +24,6 @@ class OnlineStatusService {
         'lastSeen': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 
-      // Слушатель изменения подключения
       _connectivitySubscription = _connectivity.onConnectivityChanged.listen((
         status,
       ) async {
@@ -32,7 +31,6 @@ class OnlineStatusService {
         await _updateStatus(userId, status != ConnectivityResult.none);
       }, onError: (e) => print('Connectivity error: $e'));
 
-      // Обработка закрытия приложения
       _firestore
           .collection('Users')
           .doc(userId)

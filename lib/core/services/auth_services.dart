@@ -1,4 +1,3 @@
-// lib/core/services/firebase_auth_service.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -43,5 +42,4 @@ class FirebaseAuthService {
 
   Future<void> rawSignOut() async => await _auth.signOut();
   User? get currentUser => _auth.currentUser;
-
 }

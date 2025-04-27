@@ -13,7 +13,6 @@ class ChatRepository {
     });
   }
 
-  // Обновление статуса пользователя
   Future<void> updateUserStatus({
     required String userId,
     required bool isOnline,
@@ -29,7 +28,6 @@ class ChatRepository {
     }
   }
 
-  // Блокировка пользователя
   Future<void> blockUser(String userIdToBlock) async {
     try {
       final currentUserId = _auth.currentUser?.uid;
@@ -45,7 +43,6 @@ class ChatRepository {
     }
   }
 
-  // Отправка сообщения
   Future<void> sendMessage({
     required String receiverId,
     required String message,
@@ -74,7 +71,6 @@ class ChatRepository {
     }
   }
 
-  // Получение сообщений чата
   Stream<List<Map<String, dynamic>>> getMessages(String otherUserId) {
     final currentUserId = _auth.currentUser?.uid;
     if (currentUserId == null) {
@@ -94,7 +90,6 @@ class ChatRepository {
         });
   }
 
-  // Получение списка заблокированных пользователей
   Stream<List<String>> getBlockedUsers() {
     final currentUserId = _auth.currentUser?.uid;
     if (currentUserId == null) {
@@ -108,7 +103,6 @@ class ChatRepository {
     });
   }
 
-  // Разблокировка пользователя
   Future<void> unblockUser(String userIdToUnblock) async {
     try {
       final currentUserId = _auth.currentUser?.uid;
@@ -124,13 +118,11 @@ class ChatRepository {
     }
   }
 
-  // Генерация ID чат-комнаты
   String _generateChatRoomId(String id1, String id2) {
     final ids = [id1, id2]..sort();
     return ids.join('_');
   }
 
-  // Проверка, заблокирован ли пользователь
   Future<bool> isUserBlocked(String userId) async {
     final currentUserId = _auth.currentUser?.uid;
     if (currentUserId == null) return false;
@@ -140,7 +132,6 @@ class ChatRepository {
     return blockedUsers.contains(userId);
   }
 
-  // Удаление чата
   Future<void> deleteChat(String chatId) async {
     try {
       await _firestore.collection('Chats').doc(chatId).delete();

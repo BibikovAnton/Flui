@@ -9,7 +9,6 @@ class DrawingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Группируем точки сначала по пользователю, затем по штриху
     final Map<String, Map<String, List<DrawingPoint>>> userStrokes = {};
 
     for (final point in points) {
@@ -19,7 +18,6 @@ class DrawingPainter extends CustomPainter {
           .add(point);
     }
 
-    // Рисуем каждый штрих отдельно
     for (final userEntry in userStrokes.entries) {
       for (final strokeEntry in userEntry.value.entries) {
         final strokePoints = strokeEntry.value;

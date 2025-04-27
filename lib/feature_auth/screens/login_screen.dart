@@ -16,7 +16,6 @@ class LoginScreen extends ConsumerWidget {
     final state = ref.watch(loginProvider);
     final loginNotifier = ref.read(loginProvider.notifier);
 
-    // Обработка ошибок
     if (state.error != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _showErrorDialog(context, state.error!, loginNotifier);
