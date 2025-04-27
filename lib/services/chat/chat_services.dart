@@ -1,12 +1,13 @@
-import 'package:chatty/models/message.dart';
-import 'package:chatty/services/auth/auth_services.dart';
+import 'package:Flui/feature_chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatService extends ChangeNotifier {
-  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class ChatService extends StateNotifier<void> {
+  final FirebaseFirestore _firebaseFirestore;
+  final FirebaseAuth _auth;
+
+  ChatService(this._firebaseFirestore, this._auth) : super(null);
 
   Stream<List<Map<String, dynamic>>> getUsersStream() {
     return _firebaseFirestore.collection('Users').snapshots().map((snapshot) {
@@ -17,7 +18,7 @@ class ChatService extends ChangeNotifier {
     });
   }
 
-  Future<void> sendMessage(String recrveId, message) async {
+  Future<void> sendMessage(String recrveId, String message) async {
     final String currentUserId = _auth.currentUser!.uid;
     final String currentUserEmail = _auth.currentUser!.email!;
     final Timestamp timestamp = Timestamp.now();
@@ -41,7 +42,7 @@ class ChatService extends ChangeNotifier {
         .add(newMessage.toMap());
   }
 
-  Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
+  Stream<QuerySnapshot> getMessages(String userID, String otherUserID) {
     List<String> ids = [userID, otherUserID];
     ids.sort();
     String chatRoomID = ids.join('_');
@@ -90,6 +91,16 @@ class ChatService extends ChangeNotifier {
     await _firebaseFirestore.collection('Reports').add(report);
   }
 
+  Future<void> deleteUserData(String userId) async {
+    final currentUser = _auth.currentUser;
+    await _firebaseFirestore
+        .collection('Users')
+        .doc(currentUser!.uid)
+        .collection('DeleteUsers')
+        .doc(userId)
+        .delete();
+  }
+
   Future<void> blockUser(String userId) async {
     final currentUser = _auth.currentUser;
     await _firebaseFirestore
@@ -98,7 +109,6 @@ class ChatService extends ChangeNotifier {
         .collection('BlockedUsers')
         .doc(userId)
         .set({});
-    notifyListeners();
   }
 
   Future<void> unblockUser(String blockedUserId) async {
@@ -129,5 +139,22 @@ class ChatService extends ChangeNotifier {
               .map((doc) => doc.data() as Map<String, dynamic>)
               .toList();
         });
+  }
+
+  Future<String?> findChatIdBetweenUsers(String user1, String user2) async {
+    final query =
+        await _firebaseFirestore
+            .collection('chat_rooms')
+            .where('members', arrayContainsAny: [user1, user2])
+            .limit(1)
+            .get();
+
+    return query.docs.isEmpty ? null : query.docs.first.id;
+  }
+
+  Future<void> softDeleteChatForUser(String chatId, String userId) async {
+    await _firebaseFirestore.collection('chat_rooms').doc(chatId).update({
+      'deletedForUsers': FieldValue.arrayUnion([userId]),
+    });
   }
 }

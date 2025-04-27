@@ -1,0 +1,48 @@
+
+lib/
+├── feature_auth/          # Фича авторизации
+│   ├── models/            # Модели auth
+│   ├── widgets/           # Кастомные виджеты auth
+│   ├── screens/           # LoginScreen, RegisterScreen и т.д.
+│   └── providers/         # Провайдеры auth (auth_repository_provider и т.п.)
+│
+├── feature_chats/         # Фича чатов
+│   ├── models/            # Модели Chat, Message
+│   ├── widgets/           # ChatTile, MessageBubble
+│   ├── screens/           # ChatListScreen, ChatScreen
+│   └── providers/         # chat_repository_provider и др.
+│
+├── feature_drawing/       # Фича рисования
+│   ├── models/            # DrawingData, Stroke
+│   ├── widgets/           # DrawingCanvas, ToolsPanel
+│   ├── screens/           # DrawingScreen
+│   └── providers/         # drawing_repository_provider
+│
+├── core/
+│   ├── shared/            # Общие элементы
+│   │   ├── providers/     # Общие провайдеры (firebase, theme)
+│   │   └── widgets/       # MyDrawer, AppBar и т.д.
+│   │
+│   ├── services/          # FirebaseAuthService, ChatService
+│   ├── repositories/      # AuthRepository, ChatRepository
+│   ├── constants/         # AppColors, Routes
+│   ├── utils/             # Helpers, Extensions
+│   └── errors/            # AppException, AuthException
+│
+└── main.dart              # Точка входа
+
+//Failure добавить и Exctantion и пакет dartz
+
+⚡️Используйте barrel-файлы (feature.dart) для упрощения импортов.
+
+// В папке feature_a/feature_a.dart
+export 'models/model_a.dart';
+export 'widgets/widget_a.dart';
+export 'screens/screen_a.dart';
+
+//сервисы не выносить
+
+
+переписать отдельно сервисы и репозиторие,пока едино!!!
+
+

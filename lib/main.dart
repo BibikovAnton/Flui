@@ -1,31 +1,38 @@
-import 'package:chatty/firebase_options.dart';
-import 'package:chatty/pages/drawing_board_page.dart';
-import 'package:chatty/services/auth/auth.dart';
-import 'package:chatty/services/auth/login_or_register.dart';
-import 'package:chatty/theme/theme_provider.dart';
+import 'package:Flui/core/app/app.dart';
+import 'package:Flui/core/services/auth_services.dart';
+import 'package:Flui/core/services/user_service.dart';
+import 'package:Flui/feature_auth/data/repositories/auth_repository.dart';
+import 'package:Flui/feature_auth/data/repositories/user_repository.dart';
+import 'package:Flui/firebase_options.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    ),
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirestoreUserService _firestoreUserService = FirestoreUserService(
+    _firestore,
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AuthGate(),
-      theme: Provider.of<ThemeProvider>(context).themeData,
-    );
+  final UserRepository _userRepo = UserRepository(_firestoreUserService);
+  final FirebaseAuthService _authService = FirebaseAuthService(
+    _auth,
+    _firestore,
+  );
+  final user = AuthRepository(_authService, _userRepo).getCurrentUser();
+  if (user != null) {
+    await FirebaseFirestore.instance.collection('Users').doc(user.uid).update({
+      'isOnline': true,
+      'lastSeen': FieldValue.serverTimestamp(),
+    });
   }
+
+  runApp(ProviderScope(child: const MyApp()));
 }

@@ -1,6 +1,7 @@
-import 'package:chatty/pages/login_screen.dart';
-import 'package:chatty/pages/register_page.dart';
+import 'package:Flui/feature_auth/screens/register_page.dart';
 import 'package:flutter/material.dart';
+
+import '../../feature_auth/screens/login_screen.dart';
 
 class LoginOrRegister extends StatefulWidget {
   const LoginOrRegister({super.key});
